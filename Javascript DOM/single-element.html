@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tekil Element</title>
+</head>
+<body>
+    <div class = "card"
+        ></div><h3 id = "card-title"  class= "card-title-2 ,3" >Furkan</h3>
+        <ul id="liste">
+            <li>
+                breakfast
+            </li>
+            <li>
+                homework
+            </li>
+        </ul>
+    </div>
+    <script>
+        let sonuc;
+        sonuc = document.getElementById("card-title");
+        sonuc = document.getElementById("card-title").classList;
+        sonuc = document.getElementById("card-title").style.color = "blue";
+        sonuc = document.getElementById("card-title").style.fontSize = "50px";
+        sonuc = document.getElementById("card-title").innerText ="ToDo";
+        sonuc = document.getElementById("liste").style.fontSize= "30px ";
+        console.log(sonuc);
+    </script>
+</body>
+</html>
