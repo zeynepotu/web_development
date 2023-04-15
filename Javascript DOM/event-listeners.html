@@ -15,15 +15,23 @@
                 <div class="card">
                     <div class="card-header">
                         TODO App
-                        <div class="card-title">
-                            <div class="form " type="input">
-                                <div class="btn">Tıkla</div>
-                            </div>
+                        <div class="card-body">
+                            <form>
+                                <div>
+                                    <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Add a new task">
+                                    <button  type="submit" class="btn btn-primary" id="btnAddNewTask">Add</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="card mt-3">
+                        <div class="card-header">
+                            <button id="btnClear" class="btn btn-danger float-end">Temizle</button>
+                        </div>
                         <ul id="task-list" class=" list-group list-group-flush">
-                                      
+                                  
                         </ul>
 
 <script>
@@ -45,12 +53,24 @@
         `;
         ul.insertAdjacentHTML("beforeend",li);
     };
-    //document.querySelector("#task-list").parentElement.remove();
-    //removeAttribute)() ile class ve id bilgisini silebilirsin.
-    //classList.add .remove .contains 
-    document.querySelector("#task-list").children[0].classList.add("bg-danger");
-    sonuc= document.querySelector("#task-list").children[0].classList.contains("bg-danger");
-    console.log(sonuc);
+            document.querySelector("#btnAddNewTask").addEventListener("click",function(event){
+            console.log("Ekleme işlemi gerçekleşti");
+            // burada preventDefault() kullanmamızın sebebi sayfa yenilenmesini engellemek.
+            event.preventDefault();
+            // burada sayfa yenilenmesini engellemek için butona type = "button" ekledik. submit butonu default olarak sayfayı yeniler.
+     });
+
+            document.querySelector("#btnClear").addEventListener("click",clearTask);
+            //fonksiyonu ayrı bir tanımlayarak da kullanabiliriz.
+            function clearTask(event){
+                    // console.log("Temizleme işlemi gerçekleşti");                    
+                    // console.log(event);
+                    // console.log(event.target);
+                    event.target.classList.add("btn-lg");
+                    event.preventDefault();
+
+            };
+   
 </script>
                     </div>
                 </div>
