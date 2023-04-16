@@ -1,49 +1,97 @@
-// OOP Nesne Tabanlı Programlama (Object-Oriented Programming)
-// Object
+// OOP: Nesne Tabanlı Programlama
 
-function Soru (soruMetni, cevapSecenekleri, dogruCevap){
+function Soru(soruMetni, cevapSecenekleri, dogruCevap) {
     this.soruMetni = soruMetni;
     this.cevapSecenekleri = cevapSecenekleri;
     this.dogruCevap = dogruCevap;
-    //console.log(this);
-}
-// Her soru nesnesi için ayrı ayrı yazmamak için prototype kullanıyoruz.
-//Mesela 200 kez aynı fonksiyonu yazmak yerine prototype kullanarak 1 kez yazıyoruz.
-Soru.prototype.cevabiKontrolEt = function(cevap) {
-    return cevap === this.dogruCevap;
 }
 
-let soru1= new Soru("En iyi programlama dili hangisidir?", {a:"C#",b: "Java", c:"Python", d:"Javascript"}, "d");
-let soru2 = new Soru("En popüler programlama dili hangisidir?", {a:"C#", b:"Java", c:"Python", d: "Javascript"}, "a");
+Soru.prototype.cevabiKontrolEt = function(cevap) {
+    return cevap === this.dogruCevap
+}
 
 let sorular = [
-    new Soru("1-En iyi programlama dili hangisidir?", {a:"C#",b: "Java", c:"Python", d:"Javascript"}, "d"),
-    new Soru("2-En popüler programlama dili hangisidir?", {a:"C#",b: "Java", c:"Python", d:"Javascript"}, "a"),
-    new Soru ("3-En çok kazandıran programlama dili hangisidir?", {a:"C#",b: "Java", c:"Python", d:"Javascript"}, "c"),
-    new Soru ("4-En çok kazandıran programlama dili hangisidir?", {a:"C#",b: "Java", c:"Python", d:"Javascript"}, "c"),
-
+    new Soru("1-Hangisi javascript paket yönetim uygulasıdır?", { a: "Node.js", b: "Typescript", c: "Npm" , d: "Nuget" }, "c"),
+    new Soru("2-Hangisi javascript paket yönetim uygulasıdır?", { a: "Node.js", b: "Typescript", c: "Npm" }, "c"),
+    new Soru("3-Hangisi javascript paket yönetim uygulasıdır?", { a: "Node.js", b: "Typescript", c: "Npm" }, "c"),
+    new Soru("4-Hangisi javascript paket yönetim uygulasıdır?", { a: "Node.js", b: "Typescript", c: "Npm" }, "c")
 ];
-//Quiz nesnesi oluşturuyoruz.
-//Quiz nesnesi soruları ve soru indexini tutacak.
 
-function Quiz(sorular){
+function Quiz(sorular) {
     this.sorular = sorular;
     this.soruIndex = 0;
-    this.puan = 0;
 }
-// Her quiz nesnesi için ayrı ayrı yazmamak için prototype kullanıyoruz.
-Quiz.prototype.soruGetir = function(){
-    return  this.sorular[this.soruIndex];
+
+Quiz.prototype.soruGetir = function() {
+    return this.sorular[this.soruIndex];
 }
+
 const quiz = new Quiz(sorular);
 
-console.log(quiz.soruGetir());
-
-//addeventlistener ile butona tıklandığında bir fonksiyon çalıştırıyoruz.
-document.querySelector(".btn").addEventListener("click", function(){
-    if(quiz.sorular.length-1 < quiz.soruIndex){
-        alert("Quiz bitti");
-    }
-    console.log(quiz.soruGetir())
-    quiz.soruIndex++;
+document.querySelector(".btn_start").addEventListener("click", function() {
+    document.querySelector(".quiz_box").classList.add("active");
+    soruGoster(quiz.soruGetir());
+    soruSayisiniGoster(quiz.soruIndex + 1, quiz.sorular.length);
+    document.querySelector(".next_btn").classList.remove("show");
 })
+
+document.querySelector(".next_btn").addEventListener("click", function() {
+    if (quiz.sorular.length != quiz.soruIndex + 1) {
+        quiz.soruIndex += 1;
+        soruGoster(quiz.soruGetir());
+        soruSayisiniGoster(quiz.soruIndex + 1, quiz.sorular.length);
+        document.querySelector(".next_btn").classList.remove("show");
+    } else {
+        console.log("quiz bitti");
+    }
+});
+
+const option_list = document.querySelector(".option_list");
+const correctIcon = '<div class="icon"><i class="fas fa-check"></i></div>';
+const incorrectIcon = '<div class="icon"><i class="fas fa-times"></i></div>';
+
+function soruGoster(soru) {
+    let question = `<span>${soru.soruMetni}</span>`;
+    let options = '';
+
+    for(let cevap in soru.cevapSecenekleri) {
+        options += 
+            `
+                <div class="option"> 
+                    <span><b>${cevap}</b>: ${soru.cevapSecenekleri[cevap]}</span>
+                </div>
+            `;
+    }
+    document.querySelector(".question_text").innerHTML = question;
+    option_list.innerHTML = options;
+
+    const option = option_list.querySelectorAll(".option");
+
+    for(let opt of option) {
+        opt.setAttribute("onclick", "optionSelected(this)")
+    }
+}
+
+function optionSelected(option) {
+    let cevap = option.querySelector("span b").textContent;
+    let soru = quiz.soruGetir();
+
+    if(soru.cevabiKontrolEt(cevap)) {
+        option.classList.add("correct");
+        option.insertAdjacentHTML("beforeend", correctIcon);
+    } else {
+        option.classList.add("incorrect");
+        option.insertAdjacentHTML("beforeend", incorrectIcon);
+    }
+
+    for(let i=0; i < option_list.children.length; i++) {
+        option_list.children[i].classList.add("disabled");
+    }
+
+    document.querySelector(".next_btn").classList.add("show");
+}
+
+function soruSayisiniGoster(soruSirasi,toplamSoruSayisi) {
+    let tag = `<span>${soruSirasi} / ${toplamSoruSayisi}</span>`;
+    document.querySelector(".quiz_box .question_index").innerHTML = tag;
+}
