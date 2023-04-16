@@ -52,7 +52,7 @@
 
 .quiz_box .option_list .option:hover {
     color: #112B2C;
-    background: #e7c773;
+    background: #FFD33D;
 }
 
 .quiz_box .option_list .option.correct {
@@ -82,7 +82,8 @@
     pointer-events: auto;
     transform: scale(1);
 }
-.card-footer{
+
+.quiz_box footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
